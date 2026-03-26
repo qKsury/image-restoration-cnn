@@ -6,13 +6,12 @@ from add_JPEG_compression import add_jpeg_compression
 
 
 
-
 class ImageSize(Enum):
     XS = 0
     S = 1
     M = 2
     L = 3
-#тип данных с ограниченным числом значений. для улучшения читаемости
+
 
 
 class Script(Enum):
@@ -40,8 +39,6 @@ PARAMS = {
     ImageSize.M:{'noise':(0.04, 0.07), 'scale_factor': (0.22, 0.28), 'jpeg_quality': (19, 26)},
     ImageSize.L:{'noise':(0.08, 0.12), 'scale_factor': (0.09, 0.13), 'jpeg_quality': (12, 16)},
 }
-#M отклиброван
-#L откалиброван
 
 def diagonal_size(image_tensor):
     _, height, width = image_tensor.shape
@@ -69,12 +66,6 @@ def degradation(image_tensor):
     scripts = list(Script)
 
     my_scenario = random.choices(scripts, weights, k = 1)[0]
-#тест номер 1 сценарий jpeg
-    # my_scenario = Script.JPEG
-#тест номер 2 сценарий defocus + jpeg
-    # my_scenario = Script.Blur__JPEG
-#тест номер 3 сценарий все
-    # my_scenario = Script.Blur__Noise__JPEG
     params = PARAMS[get_image_size_type(image_tensor)]
 
     for effect in SCENARIOS[my_scenario]:

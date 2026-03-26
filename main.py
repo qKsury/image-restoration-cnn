@@ -20,4 +20,3 @@ for file in os.listdir("images"):
     except ValueError as e:
         print(f"file {file} was skipped! {e}")
 
-
