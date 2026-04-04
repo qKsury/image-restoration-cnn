@@ -31,7 +31,10 @@ SCENARIOS = {
     Script.Noise__JPEG: ['noise', 'jpeg'],
     Script.Blur__Noise__JPEG: ['defocus_blur', 'noise', 'jpeg']
 }
+
 weights = [2, 32, 33, 3.5, 30]
+#вероятность каждого сценария
+
 
 PARAMS = {
     ImageSize.XS:{'noise':(0.05, 0.09), 'scale_factor': (0.22, 0.28), 'jpeg_quality': (18, 24)},
@@ -39,6 +42,9 @@ PARAMS = {
     ImageSize.M:{'noise':(0.04, 0.07), 'scale_factor': (0.22, 0.28), 'jpeg_quality': (19, 26)},
     ImageSize.L:{'noise':(0.08, 0.12), 'scale_factor': (0.09, 0.13), 'jpeg_quality': (12, 16)},
 }
+#я думал, что разделить на 4 размера хорошая идея, но как оказалось разница есть только между очень большими изображениями и остальными,
+#жалко удалять, вдруг еще пригодится
+
 
 def diagonal_size(image_tensor):
     _, height, width = image_tensor.shape

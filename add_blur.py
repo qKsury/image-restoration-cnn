@@ -9,7 +9,6 @@ def add_gs_blur(image_tensor, kernel_size, sigma = 0.13):
 
 
 
-
 def add_defocus_blur(image_tensor, scale_factor):
     _, height, width = image_tensor.shape
     new_height = int(height * scale_factor)
@@ -17,5 +16,5 @@ def add_defocus_blur(image_tensor, scale_factor):
     batch_img = image_tensor.unsqueeze(0)
     low_img = f.interpolate(batch_img, (new_height, new_width), mode="bilinear")
     done_img = f.interpolate(low_img, (height, width), mode="bilinear")
-    done_img =done_img.squeeze(0)
+    done_img = done_img.squeeze(0)
     return done_img
