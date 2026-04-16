@@ -12,7 +12,7 @@ CROP_SIZE = 256
 def image_checker(image_tensor):
     _, height, width = image_tensor.shape
 
-    if height >= CROP_SIZE and width >= CROP_SIZE:
+    if height >= CROP_SIZE and width >= CROP_SIZE and  550 <= diagonal_size(image_tensor) < 4800:
         return True
     return False
 

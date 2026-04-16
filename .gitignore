@@ -12,3 +12,7 @@ output/
 *.jpeg
 
 .idea/
+
+program.prof
+
+requirements.txt
