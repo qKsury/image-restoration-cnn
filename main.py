@@ -1,22 +1,31 @@
-import PIL.Image as Image
-import torchvision.transforms as transforms
-import torch
-import matplotlib.pyplot as plt
-from degradation import degradation
 import os
+from PIL import Image
+from torchvision import transforms as transformer
+from degradation import degradation
+to_tensor = transformer.ToTensor()
+to_img = transformer.ToPILImage()
+from make_data_set import get_coord_crop
+from make_data_set import apply_crop
 
-transformer_to_tensor = transforms.ToTensor()
-transformer_to_IMG = transforms.ToPILImage()
 
-os.makedirs("output", exist_ok=True)
+os.makedirs('clean_img', exist_ok= True)
+os.makedirs('degr_img', exist_ok= True)
+os.makedirs('images', exist_ok= True)
 
-for file in os.listdir("images"):
-    try:
-        img = Image.open(os.path.join("images", file)).convert("RGB")
-        tensor = transformer_to_tensor(img)
-        tensor = degradation(tensor)
-        imgBAD = transformer_to_IMG(tensor)
-        imgBAD.save(os.path.join('output', file))
-    except ValueError as e:
-        print(f"file {file} was skipped! {e}")
+for name in os.listdir('images'):
+    img = Image.open(f'images/{name}').convert('RGB')
+    img_tensor = to_tensor(img)
 
+    coord = get_coord_crop(img_tensor)
+
+    deg_tensor = degradation(img_tensor)
+
+    orig_crop = apply_crop(img_tensor, coord[0], coord[1], coord[2] ,coord[3])
+    deg_crop = apply_crop(deg_tensor, coord[0], coord[1], coord[2] ,coord[3])
+
+    orig_img = to_img(orig_crop)
+    deg_img = to_img(deg_crop)
+
+
+    orig_img.save(f'clean_img/{name}')
+    deg_img.save(f'degr_img/{name}')

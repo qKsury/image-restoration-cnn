@@ -37,10 +37,10 @@ weights = [2, 32, 33, 3.5, 30]
 
 
 PARAMS = {
-    ImageSize.XS:{'noise':(0.05, 0.09), 'scale_factor': (0.22, 0.28), 'jpeg_quality': (18, 24)},
-    ImageSize.S:{'noise': (0.05, 0.09), 'scale_factor': (0.22, 0.28), 'jpeg_quality': (20, 27)},
-    ImageSize.M:{'noise':(0.04, 0.07), 'scale_factor': (0.22, 0.28), 'jpeg_quality': (19, 26)},
-    ImageSize.L:{'noise':(0.08, 0.12), 'scale_factor': (0.09, 0.13), 'jpeg_quality': (12, 16)},
+    ImageSize.XS:{'noise':(0.07, 0.15), 'scale_factor': (0.7, 1), 'jpeg_quality': (78, 92)},
+    ImageSize.S:{'noise': (0.06, 0.11), 'scale_factor': (0.7, 1), 'jpeg_quality': (78, 92)},
+    ImageSize.M:{'noise':(0.05, 0.09), 'scale_factor': (0.7, 1), 'jpeg_quality': (78, 92)},
+    ImageSize.L:{'noise':(0.13, 0.18), 'scale_factor': (0.6, 1), 'jpeg_quality': (70, 90)},
 }
 #я думал, что разделить на 4 размера хорошая идея, но как оказалось разница есть только между очень большими изображениями и остальными,
 #жалко удалять, вдруг еще пригодится

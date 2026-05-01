@@ -18,3 +18,4 @@ def add_jpeg_compression (image_tensor, quality):
     image_tensor = transformer_to_tensor(image)
 
     return image_tensor
+
