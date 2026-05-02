@@ -95,18 +95,18 @@ def model_training(model, kol_vo_epoh):
 
 
 if __name__ == '__main__':
-    train_dataset = ImageRestorationDataset("clean_img", 'degr_img')
+    train_dataset = ImageRestorationDataset("clean", 'degr')
     train_loader = DataLoader(train_dataset, 4, True, num_workers=2)
 
 
     robot = RestorationCNN()
     robot = robot.to(device)
-
+    robot.load_state_dict(torch.load("robot_weights_new_era2.pth", map_location=device))
 
     loss = nn.L1Loss()
-    optimizer = optim.Adam(robot.parameters(), lr = 0.0006)
+    optimizer = optim.Adam(robot.parameters(), lr = 0.0001)
 
 
-    model_training(robot, 30)
-    torch.save(robot.state_dict(), "robot_weights_exp3.pth")
+    model_training(robot, 20)
+    torch.save(robot.state_dict(), "robot_weights_new_era_end.pth")
 

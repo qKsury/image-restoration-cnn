@@ -8,7 +8,7 @@ to_tensor = transforms.ToTensor()
 to_img = transforms.ToPILImage()
 
 robot = RestorationCNN()
-robot.load_state_dict(torch.load("robot_weights_exp3.pth"))
+robot.load_state_dict(torch.load("robot_weights_new_era_end.pth"))
 robot.eval()
 
 

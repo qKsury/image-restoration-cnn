@@ -1,8 +1,6 @@
 import random
 from enum import Enum
-from add_noise import add_noise
-from add_blur import add_gs_blur, add_defocus_blur
-from add_JPEG_compression import add_jpeg_compression
+from add_noise import *
 
 
 
@@ -12,35 +10,15 @@ class ImageSize(Enum):
     M = 2
     L = 3
 
-
-
-class Script(Enum):
-    JPEG = 0
-    Blur__JPEG = 1
-    JPEG__Blur = 2
-    Noise__JPEG = 3
-    Blur__Noise__JPEG = 4
-
-
-
-
-SCENARIOS = {
-    Script.JPEG: ['jpeg'],
-    Script.Blur__JPEG: ['defocus_blur', 'jpeg'],
-    Script.JPEG__Blur: ['jpeg', 'defocus_blur'],
-    Script.Noise__JPEG: ['noise', 'jpeg'],
-    Script.Blur__Noise__JPEG: ['defocus_blur', 'noise', 'jpeg']
-}
-
-weights = [2, 32, 33, 3.5, 30]
-#вероятность каждого сценария
+# 'rgb_noise', 'luminance_noise', 'mixed_rgb_luminance_noise', 'strange_noise', 'chroma_noise'
+all_noises = ['rgb_noise', 'luminance_noise', 'mixed_rgb_luminance_noise', 'strange_noise', 'chroma_noise' ]
 
 
 PARAMS = {
-    ImageSize.XS:{'noise':(0.07, 0.15), 'scale_factor': (0.7, 1), 'jpeg_quality': (78, 92)},
-    ImageSize.S:{'noise': (0.06, 0.11), 'scale_factor': (0.7, 1), 'jpeg_quality': (78, 92)},
-    ImageSize.M:{'noise':(0.05, 0.09), 'scale_factor': (0.7, 1), 'jpeg_quality': (78, 92)},
-    ImageSize.L:{'noise':(0.13, 0.18), 'scale_factor': (0.6, 1), 'jpeg_quality': (70, 90)},
+    ImageSize.XS:{'noise':(0.05, 0.12)},
+    ImageSize.S:{'noise': (0.07, 0.14)},
+    ImageSize.M:{'noise':(0.08, 0.013)},
+    ImageSize.L:{'noise':(0.1, 0.14)},
 }
 #я думал, что разделить на 4 размера хорошая идея, но как оказалось разница есть только между очень большими изображениями и остальными,
 #жалко удалять, вдруг еще пригодится
@@ -69,17 +47,18 @@ def get_image_size_type(image_tensor):
 
 
 def degradation(image_tensor):
-    scripts = list(Script)
+    img_type = get_image_size_type(image_tensor)
+    noise_type = random.choice(all_noises)
 
-    my_scenario = random.choices(scripts, weights, k = 1)[0]
-    params = PARAMS[get_image_size_type(image_tensor)]
-
-    for effect in SCENARIOS[my_scenario]:
-        match effect:
-            case 'jpeg':
-                image_tensor = add_jpeg_compression(image_tensor, random.randint(*params['jpeg_quality']))
-            case 'defocus_blur':
-                image_tensor = add_defocus_blur(image_tensor, random.uniform(*params['scale_factor']))
-            case 'noise':
-                image_tensor = add_noise(image_tensor, random.uniform(*params['noise']))
-    return image_tensor
+    match noise_type:
+        case 'rgb_noise':
+            return add_rgb_noise(image_tensor, random.uniform(*PARAMS[img_type]['noise']))
+        case 'luminance_noise':
+            return add_luminance_noise(image_tensor, random.uniform(*PARAMS[img_type]['noise']))
+        case 'mixed_rgb_luminance_noise':
+            return add_mixed_rgb_luminance_noise(image_tensor, random.uniform(*PARAMS[img_type]['noise']))
+        case 'strange_noise':
+            return add_strange_noise(image_tensor, random.uniform(*PARAMS[img_type]['noise']))
+        case 'chroma_noise':
+            return add_chroma_noise(image_tensor, random.uniform(*PARAMS[img_type]['noise']))
+    return None
